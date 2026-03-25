@@ -10,32 +10,30 @@ const mongoose = require('mongoose');
 const userRouter = require('./api/routes/user');
 const taskRouter = require('./api/routes/task');
 
-// CORS (important for Vercel frontend)
+// FIXED CORS
 app.use(cors({
-  origin: "*", // you can restrict later to your vercel URL
+  origin: [
+    "https://todo-webapp-unsaid-talks.vercel.app"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
-// Middleware
 app.use(express.json());
 
 // Routes
 app.use('/api/user', userRouter);
 app.use('/api/task', taskRouter);
 
-// Health check route (very useful)
+// Health check
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-// MongoDB connection
+// MongoDB
 mongoose
-  .connect(process.env.DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.DB_URL)
   .then(() => console.log('MongoDB is Connected'))
-  .catch((err) => console.log(`Mongoose Connection error: ${err}`));
+  .catch((err) => console.log(`Mongoose Error: ${err}`));
 
 module.exports = app;
