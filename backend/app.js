@@ -10,15 +10,13 @@ const mongoose = require('mongoose');
 const userRouter = require('./api/routes/user');
 const taskRouter = require('./api/routes/task');
 
-// FIXED CORS
+// CORS
 app.use(cors({
   origin: [
     "https://todo-webapp-unsaid-talks.vercel.app"
   ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
-
 app.use(express.json());
 
 // Routes
