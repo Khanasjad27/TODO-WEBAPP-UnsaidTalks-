@@ -10,36 +10,32 @@ const mongoose = require('mongoose');
 const userRouter = require('./api/routes/user');
 const taskRouter = require('./api/routes/task');
 
-// PROPER CORS (FINAL FIX)
-const corsOptions = {
-  origin: "https://todo-webapp-unsaid-talks.vercel.app",
+// FINAL CORS 
+app.use(cors({
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-};
+}));
 
-// apply cors
-app.use(cors(corsOptions));
+// HANDLE PREFLIGHT REQUESTS
+app.options("*", cors());
 
-// HANDLE PREFLIGHT (MOST IMPORTANT LINE)
-app.options("*", cors(corsOptions));
-
-// middleware
+// Middleware
 app.use(express.json());
 
-// routes
+// Routes
 app.use('/api/user', userRouter);
 app.use('/api/task', taskRouter);
 
-// test route
+// Health check
 app.get('/', (req, res) => {
-  res.send("API running...");
+  res.send("API is running...");
 });
 
-// DB
+// MongoDB connection
 mongoose
   .connect(process.env.DB_URL)
   .then(() => console.log('MongoDB Connected'))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log('Mongo Error:', err));
 
 module.exports = app;
