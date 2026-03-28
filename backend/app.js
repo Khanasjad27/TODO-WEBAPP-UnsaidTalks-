@@ -11,14 +11,12 @@ const mongoose = require('mongoose');
 const userRouter = require('./api/routes/user');
 const taskRouter = require('./api/routes/task');
 
-// ✅ CORS (FINAL WORKING)
+// ✅ CORS (SAFE + WORKING)
 app.use(cors({
   origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
-
-app.options("*", cors());
 
 // Middleware
 app.use(express.json());
@@ -27,23 +25,14 @@ app.use(express.json());
 app.use('/api/user', userRouter);
 app.use('/api/task', taskRouter);
 
-// Health route
+// Health
 app.get('/health', (req, res) => {
   res.status(200).json({ status: "OK" });
 });
 
-// Root route
+// Root
 app.get('/', (req, res) => {
-  res.send("API is running...");
-});
-
-// GLOBAL ERROR HANDLER
-app.use((err, req, res, next) => {
-  console.error("ERROR:", err);
-  res.status(500).json({
-    success: false,
-    message: err.message || "Server Error"
-  });
+  res.send("API running...");
 });
 
 // MongoDB
