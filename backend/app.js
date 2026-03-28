@@ -27,14 +27,16 @@ app.use(express.json());
 app.use('/api/user', userRouter);
 app.use('/api/task', taskRouter);
 
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: "OK" });
+});
+
 // Health check
 app.get('/', (req, res) => {
   res.send("API is running...");
 });
 
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: "OK" });
-});
 
 // MongoDB connection
 mongoose
